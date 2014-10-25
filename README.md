@@ -1,4 +1,3 @@
-keysplines
-==========
+#KeySplines
 
-A tool to interactively explore and test CSS and SVG Animation KeySplines
+A tool to interactively explore CSS and SVG Animation KeySplines.

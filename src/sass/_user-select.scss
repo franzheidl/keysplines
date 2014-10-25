@@ -1,0 +1,6 @@
+@mixin user-select($val) {
+  $prefixes: '-webkit-', '-moz-', '-ms-', '-o-', '';
+  @each $prefix in $prefixes {
+    #{$prefix}user-select: $val;
+  }
+}

@@ -1,0 +1,81 @@
+doctype html
+
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width', initial-scale='1.0')
+    meta(name='desctription', content='A tool to explore and test CSS and SVG animation keysplines.')
+    meta(name='keywords', content='CSS, SVG, animation, keyspline, keysplines, timing, easing, cubic, bezier')
+    title KeySplines
+    link(rel='stylesheet', href='keySplines.css', type='text/css')
+    script(src='main.js')
+    link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900', type='text/css')
+    link(href='http://fonts.googleapis.com/css?family=Roboto:300,700', rel='stylesheet', type='text/css')
+    
+body
+  .content
+    header
+      h1 Animation KeySplines
+      
+      p Explore, understand, and test CSS and SVG animation keySplines.
+      
+      
+    
+    main
+      .container
+        div.box
+          #animate-box
+            svg(id='animate-svg' xmlns='http://www.w3.org/2000/svg' width='100%' height='100%')
+              circle(r='10' cx='10' cy='50%' fill='#555')
+                animate(id='animate', begin='0', repeatCount='indefinite', attributeType='XML')
+          .box
+            ul.options
+              li
+                label(for='duration') Duration:
+                input(id='duration', type='number', min='0.1', max='10', step='0.1')
+              li
+                radiogroup(name='direction', id='direction')
+                  ul
+                    li
+                      input(type='radio', name='direction', id='horizontal', value='horizontal')
+                      label(for='horizontal') Horizontal
+                    li
+                      input(type='radio', name='direction', id='vertical', value='vertical')
+                      label(for='vertical') Vertical
+            
+        div.box
+          #spline-box
+            svg(id='spline-svg' xmlns='http://www.w3.org/2000/svg'  width='100%' height='100%')
+              
+              path(id='spline', stroke='#666', stroke-width="3" fill='none')
+              path(id='indicator', stroke='#ff2f43', stroke-width='1')
+                animate(id='indicator-animate', attributeName='d', attributeType='XML', repeatCount='indefinite')
+              circle(id='handle1', r='4', fill='#28affa')
+              line(id='line1', stroke="#28affa")
+              circle(id='handle2', r='4', fill='#28affa')
+              line(id='line2', stroke='#28affa')
+            
+            span(id='tooltip')
+            
+          .box
+            ul.options
+              li
+                p.label Drag the handles above, or enter four space-separated numeric values between 0 and 1:
+                div.output-wrap
+                  input(id='output')
+                  button(id='output-button', disabled='disabled') Update
+              
+              li
+                input(type='checkbox' id='show-indicator')
+                label(for='show-indicator') Show Indicator
+              li
+                p The Indicator shows the point in time the animation is currently at; the steeper the curve at this point, the faster the value of the animated attribute changes.
+
+          
+          
+  footer
+    ul
+      li
+        &copy; <a href='http://www.franzheidl.de'> Franz Heidl</a> 2014, MIT License.
+      li
+        a(href='https://github.com/franzheidl/KeySplines') Github
