@@ -9,43 +9,49 @@ MIT License.
 function keySplines() {
   'use strict';
   
-  var segments = 10;
-  var keySpline = '0.1 0.8 0.9 0.1';
-  var sx1, sy1, sx2, sy2;
-  var direction;
-  var directionVal = 'horizontal';
-  var horizontal;
-  var vertical;
-  var radios;
-  var duration;
-  var durationVal = 2;
-  var ball;
-  var showIndicator;
-  var showIndicatorVal = true;
-  var radius;
-  var animate;
-  var animateAttribute;
-  var animateBaseVal;
-  var animateVal;
-  var animateSVG;
-  var animateParent;
-  var spline;
-  var splineSVG;
-  var splineWidth;
-  var splineHeight;
-  var splineParent;
-  var handle1;
-  var line1;
-  var handle2;
-  var line2;
-  var indicator;
-  var indicatorSVG;
-  var indicatorAnimate;
-  var indicatorBallAnimate;
-  var output;
-  var outputButton;
-  var tooltip;
-  var dragging, draggable, prevPosX, prevPosY;
+  var segments = 10,
+      keySpline = '0.1 0.8 0.9 0.1',
+      sx1,
+      sy1,
+      sx2,
+      sy2,
+      direction,
+      directionVal = 'horizontal',
+      horizontal,
+      vertical,
+      radios,
+      duration,
+      durationVal = 2,
+      ball,
+      showIndicator,
+      showIndicatorVal = true,
+      radius,
+      animate,
+      animateAttribute,
+      animateBaseVal,
+      animateVal,
+      animateSVG,
+      animateParent,
+      spline,
+      splineSVG,
+      splineWidth,
+      splineHeight,
+      splineParent,
+      handle1,
+      line1,
+      handle2,
+      line2,
+      indicator,
+      indicatorSVG,
+      indicatorAnimate,
+      indicatorBallAnimate,
+      output,
+      outputButton,
+      tooltip,
+      dragging,
+      draggable,
+      prevPosX,
+      prevPosY;
   
   
   
@@ -171,7 +177,7 @@ function keySplines() {
     
     // Update Indicator
     if (!showIndicator.checked) {
-      indicator.setAttribute('style', 'display:none;')
+      indicator.setAttribute('style', 'display:none;');
     } else {
       indicator.removeAttribute('style');
     }
@@ -181,10 +187,7 @@ function keySplines() {
     indicatorAnimate.setAttributeNS(null, 'dur', durationVal / 2 + 's');
     
     // update Output
-    output.value = Math.round(keySplineArr[0] * 100) / 100 + ' '
-                 + Math.round(keySplineArr[1] * 100) / 100 + ' '
-                 + Math.round(keySplineArr[2] * 100) / 100 + ' '
-                 + Math.round(keySplineArr[3] * 100) / 100;
+    output.value = Math.round(keySplineArr[0] * 100) / 100 + ' ' + Math.round(keySplineArr[1] * 100) / 100 + ' ' + Math.round(keySplineArr[2] * 100) / 100 + ' ' + Math.round(keySplineArr[3] * 100) / 100;
                  
     // disable output button again
     outputButton.setAttribute('disabled', 'disabled');
@@ -207,8 +210,8 @@ function keySplines() {
         y: e.pageY - prevPosY
       };
       var oldPos = {
-        x: parseInt(draggable.getAttribute('cx')),
-        y: parseInt(draggable.getAttribute('cy'))
+        x: parseInt(draggable.getAttribute('cx'), 10),
+        y: parseInt(draggable.getAttribute('cy'), 10)
       };
       var newPos = {
         x: oldPos.x += delta.x,
@@ -236,15 +239,10 @@ function keySplines() {
       
       var keySplineArr = keySpline.split(' ');
       if (draggable.getAttribute('id') === 'handle1') {
-        keySpline =  newPos.x / splineWidth + ' '
-                  +  (newPos.y - splineHeight) / (splineHeight * -1)   + ' '
-                  + keySplineArr[2] + ' ' + keySplineArr[3];
+        keySpline =  newPos.x / splineWidth + ' ' +  (newPos.y - splineHeight) / (splineHeight * -1)   + ' ' + keySplineArr[2] + ' ' + keySplineArr[3];
       }
       else if (draggable.getAttribute('id') === 'handle2') {
-        // this is not quite right:
-        keySpline = keySplineArr[0] + ' ' + keySplineArr[1] + ' '
-                  + newPos.x / splineWidth + ' '
-                  + (newPos.y - splineHeight) / (splineHeight * -1);
+        keySpline = keySplineArr[0] + ' ' + keySplineArr[1] + ' ' + newPos.x / splineWidth + ' ' + (newPos.y - splineHeight) / (splineHeight * -1);
       }
       
       showTooltip(draggable);
@@ -285,14 +283,12 @@ function keySplines() {
   
   function validKeySpline(s) {
     var arr = s.split(' ');
-    var nArr = []
+    var nArr = [];
     for (var i = 0; i < arr.length; i++) {
-      console.log(arr[i].trim());
       if (arr[i].trim() !== '' && isNumber(arr[i].trim())) {
         nArr.push(parseFloat(arr[i]));
       }
     }
-    console.log(nArr);
     if (nArr.length === 4) {
       for (var j = 0; j < 4; j++) {
         if(nArr[j] < 0 || nArr[j] > 1) {
@@ -334,6 +330,11 @@ function keySplines() {
     }
   }
   
+  function updateOnEnter(e) {
+    if (e.keyCode === 13 && outputButton.getAttribute('disabled') !== 'disabled') {
+      updateFromOutput();
+    }
+  }
   
   
   
@@ -341,23 +342,19 @@ function keySplines() {
     
     var dirRadios = [horizontal, vertical];
     
-    duration.addEventListener('input', function(e) {
-      update();
-    }, false);
+    duration.addEventListener('input', update, false);
     
     for (var d = 0; d < 2; d++) {
-      dirRadios[d].addEventListener('change', function(e) {
-        update();
-      }, false);
-    };
+      dirRadios[d].addEventListener('change', update, false);
+    }
     
     var handles = [handle1, handle2];
     
     for (var h = 0; h < 2; h++) {
       handles[h].addEventListener('mouseover', function(e) {
         e.target.setAttributeNS(null, 'r', 5);
-        showTooltip(e.target)
-      }, false)
+        showTooltip(e.target);
+      }, false);
       handles[h].addEventListener('mouseout', function(e) {
         if (!dragging) {
           e.target.setAttributeNS(null, 'r', 4);
@@ -373,7 +370,7 @@ function keySplines() {
       handles[h].addEventListener('mouseup', function(e) {
         endDrag(e);
       }, false);
-    };
+    }
     
     document.addEventListener('mouseup', function(e) {
       endDrag(e);
@@ -383,22 +380,12 @@ function keySplines() {
       doDrag(e);
     }, false);
     
-    showIndicator.addEventListener('change', function(e) {
-      update();
-    }, false)
+    showIndicator.addEventListener('change', update, false);
     
-    output.addEventListener('input', function(e) {
-      checkValidInput();
-    }, false);
+    output.addEventListener('input', checkValidInput, false);
     
-    outputButton.addEventListener('click', function(e) {
-      updateFromOutput();
-    }, false);
+    outputButton.addEventListener('click', updateFromOutput, false);
     
-    document.addEventListener('keydown', function(e) {
-      if (e.keyCode === 13 && outputButton.getAttribute('disabled') !== 'disabled') {
-        updateFromOutput();
-      }
-    }, false);
+    document.addEventListener('keydown', updateOnEnter, false);
   
 }
