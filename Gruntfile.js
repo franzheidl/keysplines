@@ -60,11 +60,19 @@ module.exports = function(grunt) {
           port: 8080
         }
       }
+    },
+    
+    'gh-pages': {
+      options: {
+        base: 'dist'
+      },
+      src: ['**']
     }
 
   });
 
   grunt.registerTask('dev', ['browserSync', 'watch']);
   grunt.registerTask('default', ['dev']);
+  grunt.registerTask('gh-pages', ['gh-pages'])
 
 };
