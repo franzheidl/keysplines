@@ -336,6 +336,18 @@ function keySplines() {
     }
   }
   
+  function hoverHandle(e) {
+    e.target.setAttributeNS(null, 'r', 5);
+    showTooltip(e.target);
+  }
+  
+  function unhoverHandle(e) {
+    if (!dragging) {
+      e.target.setAttributeNS(null, 'r', 4);
+      hideTooltip();
+    }
+  }
+  
   
   
     initSplines();
@@ -351,34 +363,20 @@ function keySplines() {
     var handles = [handle1, handle2];
     
     for (var h = 0; h < 2; h++) {
-      handles[h].addEventListener('mouseover', function(e) {
-        e.target.setAttributeNS(null, 'r', 5);
-        showTooltip(e.target);
-      }, false);
-      handles[h].addEventListener('mouseout', function(e) {
-        if (!dragging) {
-          e.target.setAttributeNS(null, 'r', 4);
-          hideTooltip();
-        }
-      }, false);
-      handles[h].addEventListener('mousedown', function(e) {
-        beginDrag(e);
-      }, false);
-      handles[h].addEventListener('mousemove', function(e) {
-        doDrag(e);
-      }, false);
-      handles[h].addEventListener('mouseup', function(e) {
-        endDrag(e);
-      }, false);
+      handles[h].addEventListener('mouseover', hoverHandle, false);
+      
+      handles[h].addEventListener('mouseout', unhoverHandle, false);
+      
+      handles[h].addEventListener('mousedown', beginDrag, false);
+      
+      handles[h].addEventListener('mousemove', doDrag, false);
+      
+      handles[h].addEventListener('mouseup', endDrag, false);
     }
     
-    document.addEventListener('mouseup', function(e) {
-      endDrag(e);
-    }, false);
+    document.addEventListener('mouseup', endDrag, false);
     
-    document.addEventListener('mousemove', function(e) {
-      doDrag(e);
-    }, false);
+    document.addEventListener('mousemove', doDrag, false);
     
     showIndicator.addEventListener('change', update, false);
     
