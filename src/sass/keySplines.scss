@@ -134,7 +134,8 @@ button {
   color: #fff;
 }
 
-input {
+input[type=text],
+input[type=number] {
   @include border-radius(3px);
   @include box-sizing(border-box);
   font-family: Menlo, Consolas, Monaco, "Lucida Console", monospace;

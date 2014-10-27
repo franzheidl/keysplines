@@ -27,6 +27,8 @@ function keySplines() {
       showIndicatorVal = true,
       radius,
       animate,
+      animateWidth,
+      animateHeight,
       animateAttribute,
       animateBaseVal,
       animateVal,
@@ -74,14 +76,26 @@ function keySplines() {
     }
     
     animate = document.getElementById('animate');
-    ball = animate.parentNode;
+    ball = document.getElementById('ball');
     animateSVG = document.getElementById('animate-svg');
     animateParent = animateSVG.parentNode;
+    animateWidth = animateParent.scrollWidth;
+    animateHeight = animateParent.scrollHeight;
+    animateSVG.setAttributeNS(null, 'width', animateWidth);
+    animateSVG.setAttributeNS(null, 'height', animateHeight);
+    // set viewbox
+    animateSVG.setAttributeNS(null, 'viewBox', '0 0 ' + animateWidth + ' ' + animateHeight);
     spline = document.getElementById('spline');
     splineSVG = document.getElementById('spline-svg');
-    splineWidth = splineSVG.scrollWidth;
-    splineHeight = splineSVG.scrollHeight;
     splineParent = splineSVG.parentNode;
+    splineWidth = splineParent.scrollWidth;
+    splineHeight = splineParent.scrollHeight;
+    splineSVG.setAttributeNS(null, 'width', splineWidth);
+    splineSVG.setAttributeNS(null, 'height', splineHeight);
+    splineSVG.setAttributeNS(null, 'viewBox', '0 0 ' + splineWidth + ' ' + splineHeight);
+    
+    // set viewbox
+    
     
     var segLineV, segLineH, posV, posH;
     for (var s = 0; s < (segments - 1); s++) {
@@ -125,30 +139,33 @@ function keySplines() {
   
   function update() {
     // update animation
-    splineWidth = splineSVG.scrollWidth;
-    splineHeight = splineSVG.scrollHeight;
+    splineWidth = splineParent.scrollWidth;
+    splineHeight = splineParent.scrollHeight;
     durationVal = duration.value;
     radius = ball.getAttribute('r');
     directionVal = direction.querySelector('input:checked').value;
     if (directionVal === 'horizontal') {
-      animateBaseVal = animateSVG.scrollWidth;
+      animateBaseVal = animateWidth; // wrong in FF (0)
       ball.setAttributeNS(null, 'cx', radius);
-      ball.setAttributeNS(null, 'cy', '50%');
+      ball.setAttributeNS(null, 'cy', splineHeight / 2);
       animateAttribute = 'cx';
     }
     else if (directionVal === 'vertical') {
-      animateBaseVal = animateSVG.scrollHeight;
+      animateBaseVal = animateHeight; // wrong in FF (0)
       ball.setAttributeNS(null, 'cy', radius);
-      ball.setAttributeNS(null, 'cx', '50%');
+      ball.setAttributeNS(null, 'cx', splineWidth / 2);
       animateAttribute = 'cy';
     }
-    animateVal = (animateBaseVal - radius) / animateBaseVal * 100;
+    // animateVal = (animateBaseVal - radius) / animateBaseVal * 100;
+    animateVal = animateBaseVal - radius;
+    console.log(animateBaseVal);
+    console.log(animateVal);
     animate.setAttributeNS(null, 'attributeName', animateAttribute);
     animate.setAttributeNS(null, 'from', radius);
     animate.setAttributeNS(null, 'to', radius);
     animate.setAttributeNS(null, 'dur', durationVal + 's');
     animate.setAttributeNS(null, 'calcMode', 'spline');
-    animate.setAttributeNS(null, 'values', radius + ';' + animateVal + '%' + ';' + radius);
+    animate.setAttributeNS(null, 'values', radius + ';' + animateVal + ';' + radius);
     animate.setAttributeNS(null, 'keySplines', keySpline + ';' + keySpline);
     
     // update Spline
@@ -197,6 +214,7 @@ function keySplines() {
   
   
   function beginDrag(e) {
+    e.preventDefault();
     draggable = e.target;
     dragging = true;
     prevPosX = e.pageX;
