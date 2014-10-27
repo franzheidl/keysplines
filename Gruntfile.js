@@ -73,6 +73,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('dev', ['browserSync', 'watch']);
   grunt.registerTask('default', ['dev']);
-  grunt.registerTask('gh-pages', ['gh-pages'])
+  
 
 };
