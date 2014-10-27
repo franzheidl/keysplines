@@ -79,23 +79,19 @@ function keySplines() {
     ball = document.getElementById('ball');
     animateSVG = document.getElementById('animate-svg');
     animateParent = animateSVG.parentNode;
-    animateWidth = animateParent.scrollWidth;
-    animateHeight = animateParent.scrollHeight;
+    animateWidth = animateParent.clientWidth;
+    animateHeight = animateParent.clientHeight;
     animateSVG.setAttributeNS(null, 'width', animateWidth);
     animateSVG.setAttributeNS(null, 'height', animateHeight);
-    // set viewbox
     animateSVG.setAttributeNS(null, 'viewBox', '0 0 ' + animateWidth + ' ' + animateHeight);
     spline = document.getElementById('spline');
     splineSVG = document.getElementById('spline-svg');
     splineParent = splineSVG.parentNode;
-    splineWidth = splineParent.scrollWidth;
-    splineHeight = splineParent.scrollHeight;
+    splineWidth = splineParent.clientWidth;
+    splineHeight = splineParent.clientHeight;
     splineSVG.setAttributeNS(null, 'width', splineWidth);
     splineSVG.setAttributeNS(null, 'height', splineHeight);
     splineSVG.setAttributeNS(null, 'viewBox', '0 0 ' + splineWidth + ' ' + splineHeight);
-    
-    // set viewbox
-    
     
     var segLineV, segLineH, posV, posH;
     for (var s = 0; s < (segments - 1); s++) {
@@ -139,8 +135,6 @@ function keySplines() {
   
   function update() {
     // update animation
-    splineWidth = splineParent.scrollWidth;
-    splineHeight = splineParent.scrollHeight;
     durationVal = duration.value;
     radius = ball.getAttribute('r');
     directionVal = direction.querySelector('input:checked').value;
@@ -158,8 +152,6 @@ function keySplines() {
     }
     // animateVal = (animateBaseVal - radius) / animateBaseVal * 100;
     animateVal = animateBaseVal - radius;
-    console.log(animateBaseVal);
-    console.log(animateVal);
     animate.setAttributeNS(null, 'attributeName', animateAttribute);
     animate.setAttributeNS(null, 'from', radius);
     animate.setAttributeNS(null, 'to', radius);
@@ -290,8 +282,8 @@ function keySplines() {
     else if (target.getAttribute('id') === 'handle2') {
       tooltip.textContent = 'x: ' + Math.round(keySplineArr[2] * 100) / 100 + ', y: ' + Math.round(keySplineArr[3] * 100) / 100;
     }
-    tooltip.classList.add('active');
-    tooltip.setAttribute('style', 'top:' + (tRect.bottom - 10) + 'px;' + 'left:' + (tRect.left - (tooltip.scrollWidth / 2)) + 'px;');
+    addClass(tooltip, 'active');
+    tooltip.setAttribute('style', 'top:' + (tRect.bottom + 10) + 'px;' + 'left:' + (tRect.left - (tooltip.scrollWidth / 2)) + 'px;');
   }
   
   function hideTooltip() {
@@ -351,6 +343,40 @@ function keySplines() {
   function updateOnEnter(e) {
     if (e.keyCode === 13 && outputButton.getAttribute('disabled') !== 'disabled') {
       updateFromOutput();
+    }
+  }
+  
+  function addClass(el, cl) {
+    if (el.classList.add) {
+      console.log('supports classList');
+      el.classList.add(cl);
+    }
+    else {
+      var oldClasses = el.getAttribute('class').split(' ');
+      var newClasses = [];
+      for (var c = 0; c < oldClasses.length; c++) {
+        if (oldClasses[c].trim() !== '') {
+          newClasses.push(oldClasses[c]);
+        }
+      }
+      newClasses.push(cl);
+      el.setAttribute('class', newClasses.join(' '));
+    }
+  }
+  
+  function removeClass(el, cl) {
+    if (el.classList.remove) {
+      el.classList.remove(cl);
+    }
+    else {
+      var oldClasses = el.getAttribute('class').split(' ');
+      var newClasses = [];
+      for (var c = 0; c < oldClasses.length; c++) {
+        if (oldClasses[c].trim() !== '' && oldClasses[c] !== cl) {
+          newClasses.push(oldClasses[c]);
+        }
+      }
+      el.setAttribute('class', newClasses.join(' '));
     }
   }
   
