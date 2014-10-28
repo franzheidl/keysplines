@@ -2,6 +2,8 @@
 
 A tool to interactively explore CSS and SVG Animation KeySplines. [View here](http://franzheidl.github.io/keysplines/ "KeySplines - A tool to interactively explore CSS and SVG Animation KeySplines").
 
+KeySplines uses SVG with native SVG (SMIL) animations, these are not supported by any version of Internet Explorer including 11, Safari as of 7.1 chokes on these and might even crash.
+
 
 The MIT License (MIT)
 ---
