@@ -53,7 +53,10 @@ function keySplines() {
       dragging,
       draggable,
       prevPosX,
-      prevPosY;
+      prevPosY,
+      labelOrigin,
+      labelX,
+      labelY;
   
   
   
@@ -114,6 +117,30 @@ function keySplines() {
       segLineH.setAttributeNS(null, 'y2', posV);
       splineSVG.insertBefore(segLineH, spline);
     }
+    
+    labelOrigin = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    labelOrigin.setAttributeNS(null, 'x', 5);
+    labelOrigin.setAttributeNS(null, 'y', splineHeight - 5);
+    labelOrigin.setAttributeNS(null, 'font-size', '13px');
+    labelOrigin.setAttributeNS(null, 'fill', '#666');
+    labelOrigin.textContent = '0';
+    splineSVG.insertBefore(labelOrigin, spline);
+    
+    labelX = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    labelX.setAttributeNS(null, 'x', 5);
+    labelX.setAttributeNS(null, 'y', 15);
+    labelX.setAttributeNS(null, 'font-size', '13px');
+    labelX.setAttributeNS(null, 'fill', '#666');
+    labelX.textContent = '1';
+    splineSVG.insertBefore(labelX, spline);
+    
+    labelY = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    labelY.setAttributeNS(null, 'x', splineWidth - 13);
+    labelY.setAttributeNS(null, 'y', splineHeight -5);
+    labelY.setAttributeNS(null, 'font-size', '13px');
+    labelY.setAttributeNS(null, 'fill', '#666');
+    labelY.textContent = '1';
+    splineSVG.insertBefore(labelY, spline);
       
     handle1 = document.getElementById('handle1');
     line1 = document.getElementById('line1');
