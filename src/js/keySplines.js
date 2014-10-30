@@ -301,7 +301,6 @@ function keySplines() {
   }
   
   function showTooltip(target) {
-    var tRect = target.getBoundingClientRect();
     var keySplineArr = keySpline.split(' ');
     if (target.getAttribute('id') === 'handle1') {
       tooltip.textContent = 'x: ' + Math.round(keySplineArr[0] * 100) / 100 + ', y: ' + Math.round(keySplineArr[1] * 100) / 100;
@@ -310,7 +309,7 @@ function keySplines() {
       tooltip.textContent = 'x: ' + Math.round(keySplineArr[2] * 100) / 100 + ', y: ' + Math.round(keySplineArr[3] * 100) / 100;
     }
     addClass(tooltip, 'active');
-    tooltip.setAttribute('style', 'top:' + (tRect.bottom + 10) + 'px;' + 'left:' + (tRect.left - (tooltip.scrollWidth / 2)) + 'px;');
+    tooltip.setAttribute('style', 'top:' + ((target.getBoundingClientRect().bottom + 10) + 'px;' + 'left:' + ((target.getBoundingClientRect().left) - (tooltip.scrollWidth / 2)) + 'px;'));
   }
   
   function hideTooltip() {
@@ -375,7 +374,6 @@ function keySplines() {
   
   function addClass(el, cl) {
     if (el.classList.add) {
-      console.log('supports classList');
       el.classList.add(cl);
     }
     else {
